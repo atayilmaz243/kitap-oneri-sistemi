@@ -97,7 +97,7 @@ def find_similar_books(book_ids_selected: List[str], prompt: str, top_k: int = M
     # Hibrit: hem kitap seçimi hem prompt varsa ağırlıklı ortalama
     if book_vectors and prompt_vector is not None:
         books_avg = np.mean(book_vectors, axis=0)
-        query_vector = 0.6 * books_avg + 0.4 * prompt_vector
+        query_vector = 0.4 * books_avg + 0.6 * prompt_vector
     elif book_vectors:
         query_vector = np.mean(book_vectors, axis=0)
     elif prompt_vector is not None:

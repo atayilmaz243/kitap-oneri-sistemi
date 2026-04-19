@@ -76,33 +76,50 @@ def load_model():
 
 
 def find_similar_books(book_ids_selected: List[str], prompt: str, top_k: int = MAX_ATTEMPTS) -> List[str]:
-    """Return top_k similar book IDs via vector search."""
-    vectors = []
+    """Return top_k similar book IDs via hybrid vector search + rating boost."""
+    book_vectors = []
+    prompt_vector = None
 
+    # 1) Kitap vektörleri
     if book_ids_selected:
         id_to_idx = {bid: i for i, bid in enumerate(book_ids)}
         for bid in book_ids_selected:
             idx = id_to_idx.get(bid)
             if idx is not None:
-                vectors.append(corpus_embeddings[idx])
+                book_vectors.append(corpus_embeddings[idx])
 
+    # 2) Prompt vektörü
     if prompt and prompt.strip():
         m = load_model()
         device = "mps" if torch.backends.mps.is_available() else "cpu"
-        prompt_emb = m.encode([prompt.strip()], device=device, show_progress_bar=False)[0]
-        vectors.append(prompt_emb)
+        prompt_vector = m.encode([prompt.strip()], device=device, show_progress_bar=False)[0]
 
-    if not vectors:
+    # Hibrit: hem kitap seçimi hem prompt varsa ağırlıklı ortalama
+    if book_vectors and prompt_vector is not None:
+        books_avg = np.mean(book_vectors, axis=0)
+        query_vector = 0.6 * books_avg + 0.4 * prompt_vector
+    elif book_vectors:
+        query_vector = np.mean(book_vectors, axis=0)
+    elif prompt_vector is not None:
+        query_vector = prompt_vector
+    else:
         return []
 
-    query_vector = np.mean(vectors, axis=0)
     similarities = cosine_similarity(query_vector, corpus_embeddings)
 
+    # Rating normalizasyonu (0-5 arası -> 0-1 arası)
     exclude_set = set(book_ids_selected) if book_ids_selected else set()
     scored = []
-    for i, score in enumerate(similarities):
+    for i, sim_score in enumerate(similarities):
         if book_ids[i] not in exclude_set:
-            scored.append((i, float(score)))
+            bid = book_ids[i]
+            rating = 0.0
+            if bid in books_df.index:
+                r = books_df.loc[bid, "average_rating"]
+                rating = float(r) / 5.0 if pd.notna(r) else 0.0
+            # Final skor: %70 benzerlik + %30 rating
+            final_score = 0.7 * float(sim_score) + 0.3 * rating
+            scored.append((i, final_score))
 
     scored.sort(key=lambda x: x[1], reverse=True)
     return [book_ids[idx] for idx, _ in scored[:top_k]]
@@ -112,21 +129,22 @@ def generate_story(book_title: str, book_description: str) -> str:
     """Generate a spoiler-free engaging short story inspired by the book."""
     system_prompt = """Sen yaratıcı bir hikaye yazarısın. Sana bir kitabın başlığı ve açıklaması verilecek.
 Görevin: Bu kitabın temasını, atmosferini ve duygusal tonunu yansıtan, ama KESİNLİKLE spoiler vermeyen 
-kısa ve ilgi çekici bir hikaye yazmak.
+ÇOK KISA ve ilgi çekici bir sahne/an yazmak.
 
 KURALLAR:
 - Kitabın adını, yazarın adını veya karakterlerin gerçek isimlerini ASLA kullanma
 - Kitabın olay örgüsünü direkt anlatma, sadece temasından esinlen
-- 3-4 paragraf uzunluğunda olsun
+- MAKSIMUM 1-2 kısa paragraf olsun (5-8 cümle)
+- Bir sahne, bir an, bir duygu yakala — uzun anlatma
 - Okuyucunun merakını uyandıracak, "bu kitabı okumak istiyorum" dedirtecek bir ton kullan
 - Hikayeyi Türkçe yaz
-- Sonunda "Bu hikaye hoşunuza gittiyse, bu kitabı çok seveceksiniz!" gibi bir satır EKLEME
+- Sonunda yorum, öneri veya ekstra açıklama EKLEME
 - Sadece hikayeyi yaz, başka bir şey ekleme"""
 
     user_prompt = f"""Kitap Başlığı: {book_title}
 Kitap Açıklaması: {book_description}
 
-Bu kitaptan esinlenerek kısa, ilgi çekici ve spoiler vermeyen bir hikaye yaz."""
+Bu kitaptan esinlenerek çok kısa, etkileyici ve spoiler vermeyen bir sahne yaz."""
 
     try:
         response = openai_client.chat.completions.create(
@@ -135,7 +153,7 @@ Bu kitaptan esinlenerek kısa, ilgi çekici ve spoiler vermeyen bir hikaye yaz."
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt},
             ],
-            max_completion_tokens=800,
+            max_completion_tokens=400,
             temperature=0.85,
         )
         return response.choices[0].message.content.strip()

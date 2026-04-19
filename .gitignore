@@ -23,10 +23,7 @@ env/
 .DS_Store
 Thumbs.db
 
-# Data files (too large for git)
-cleaned_data/
-*.npz
-*.parquet
+
 
 # Logs
 *.log

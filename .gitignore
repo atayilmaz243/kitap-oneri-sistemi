@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual Environment
+venv/
+.venv/
+env/
+
+# Environment Variables (API keys!)
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data files (too large for git)
+cleaned_data/
+*.npz
+*.parquet
+
+# Logs
+*.log
+
+# Byte-compiled
+*.egg-info/
+dist/
+build/
+
+# Gemini
+.gemini/

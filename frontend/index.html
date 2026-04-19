@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Kitap hikayelerini keşfedin, beğendiğiniz hikayenin arkasındaki kitabı öğrenin.">
+    <title>Kitap Keşif Sistemi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <!-- Animated background orbs -->
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">📚</span>
+                <h1>Kitap Keşif Sistemi</h1>
+            </div>
+            <p class="subtitle">Hikayeyi oku, beğenirsen kitabı keşfet</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-grid">
+            <!-- Left Panel: Search & Selection -->
+            <section class="panel panel-left" id="panelLeft">
+                <div class="panel-header">
+                    <h2>📖 Kitap Seç</h2>
+                    <span class="badge" id="selectedCount">0</span>
+                </div>
+
+                <!-- Search Box -->
+                <div class="search-wrapper">
+                    <div class="search-box">
+                        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8" />
+                            <path d="m21 21-4.35-4.35" />
+                        </svg>
+                        <input type="text" id="searchInput" placeholder="Kitap adı veya yazar ara..."
+                            autocomplete="off">
+                        <div class="search-spinner" id="searchSpinner"></div>
+                    </div>
+                    <div class="search-results" id="searchResults"></div>
+                </div>
+
+                <!-- Selected Books -->
+                <div class="selected-books" id="selectedBooks">
+                    <div class="empty-state" id="emptyState">
+                        <span class="empty-icon">🔍</span>
+                        <p>Henüz kitap seçmediniz</p>
+                        <p class="empty-hint">Yukarıdan arayarak sevdiğiniz kitapları ekleyin</p>
+                    </div>
+                </div>
+
+                <!-- Prompt Input -->
+                <div class="prompt-section">
+                    <h3>✍️ Veya Açıklayın</h3>
+                    <textarea id="promptInput"
+                        placeholder="Örn: Bilim kurgu romanları severim, uzayda geçen macera dolu kitaplar istiyorum..."
+                        rows="3"></textarea>
+                </div>
+
+                <!-- Discover Button -->
+                <button class="btn-recommend" id="btnDiscover" disabled>
+                    <span class="btn-text">✨ Hikaye Keşfet</span>
+                    <span class="btn-loading">
+                        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                    </span>
+                </button>
+            </section>
+
+            <!-- Right Panel: Story Display -->
+            <section class="panel panel-right" id="panelRight">
+                <div class="panel-header">
+                    <h2>🎭 Hikaye</h2>
+                    <span class="attempt-badge" id="attemptBadge" style="display:none;"></span>
+                </div>
+
+                <!-- Initial Empty State -->
+                <div id="storyArea">
+                    <div class="empty-state">
+                        <span class="empty-icon">💡</span>
+                        <p>Kitap seçin veya ne istediğinizi yazın</p>
+                        <p class="empty-hint">"Hikaye Keşfet" butonuna tıklayın</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+
+</html>

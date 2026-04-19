@@ -1,0 +1,9 @@
+--- EMBEDDING GENERATION SUMMARY ---
+Model used             : BAAI/bge-m3
+Device                 : mps
+Lines processed        : 1000
+Batch size             : 64
+Total time elapsed     : 57.99 seconds
+Final Memory Usage     : 2300.42 MB
+Memory Diff from start : +1882.38 MB
+Checkpoint location    : first_1k_checkpoint.npz

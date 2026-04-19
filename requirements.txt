@@ -1,0 +1,11 @@
+fastapi==0.136.0
+uvicorn==0.44.0
+openai==2.32.0
+python-dotenv==1.2.2
+pandas==3.0.2
+numpy==2.4.4
+torch==2.11.0
+sentence-transformers==5.4.1
+psutil==7.2.2
+fastparquet==2026.3.0
+pyarrow==23.0.1

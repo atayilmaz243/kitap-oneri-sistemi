@@ -40,7 +40,6 @@ Yapay zeka destekli, hikaye tabanlı bir kitap keşif platformu. Sistem, kullan�
 | **Veri** | Parquet formatında 445K+ kitap verisi |
 | **Benzerlik** | Cosine Similarity ile vektör arama |
 
-> ⚠️ **Not:** Şu an yalnızca ilk **1.000 kitap** için embedding üretilmiştir (`first_1k_checkpoint.npz`). Daha iyi ve çeşitli sonuçlar için tüm 445K+ kitabın embedding'i üretilebilir. Bunun için `generate_embeddings.py` dosyasındaki `df.head(1000)` satırını kaldırarak tüm veri seti üzerinde çalıştırabilirsiniz. Bu işlem donanıma bağlı olarak birkaç saat sürebilir.
 
 ## 📁 Proje Yapısı
 
@@ -53,7 +52,7 @@ kitap-oneri-sistemi/
 ├── generate_embeddings.py    # Embedding üretim scripti
 ├── search_books.py           # CLI kitap arama (test amaçlı)
 ├── process_books.py          # Veri temizleme scripti
-├── first_1k_checkpoint.npz   # 1000 kitap embedding'i (git'e gönderilmez)
+├── first_1k_checkpoint.npz   
 ├── cleaned_data/
 │   └── book_data             # Kitap verisi - parquet (git'e gönderilmez)
 └── frontend/
@@ -135,8 +134,5 @@ Hikayeyi beğendiğinizde, arkasındaki kitap kapak resmi, yazar adı ve açıkl
 
 ## 👥 Katkıda Bulunanlar
 
-- Geliştirici: H. Atay
+- Geliştirici: Hakan Ata Yılmaz , Ömer Fehmi Çakıcı , Yiğit Doğan Aladağ
 
-## 📄 Lisans
-
-Bu proje eğitim amaçlıdır.

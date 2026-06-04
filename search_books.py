@@ -18,7 +18,7 @@ def main():
     query_text = sys.argv[1]
     
     # 1. Load checkpoints
-    checkpoint_file = 'first_1k_checkpoint.npz'
+    checkpoint_file = 'books_data_parquet'
     try:
         data = np.load(checkpoint_file, allow_pickle=True)
         corpus_embeddings = data['embeddings']

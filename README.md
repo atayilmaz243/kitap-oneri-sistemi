@@ -52,7 +52,7 @@ kitap-oneri-sistemi/
 ├── generate_embeddings.py    # Embedding üretim scripti
 ├── search_books.py           # CLI kitap arama (test amaçlı)
 ├── process_books.py          # Veri temizleme scripti
-├── first_1k_checkpoint.npz   
+├── books_data_parquet   
 ├── cleaned_data/
 │   └── book_data             # Kitap verisi - parquet (git'e gönderilmez)
 └── frontend/
@@ -86,7 +86,7 @@ pip install -r requirements.txt
 > ⚠️ Büyük veri dosyaları git'e dahil edilmez. Aşağıdaki dosyalar gereklidir:
 
 - `cleaned_data/book_data` — Parquet formatında kitap verisi
-- `first_1k_checkpoint.npz` — Önceden üretilmiş embedding'ler
+- `books_data_parquet` — Önceden üretilmiş embedding'ler
 
 Bu dosyaları takım arkadaşlarından veya paylaşılan depolama alanından alın.
 
@@ -135,4 +135,3 @@ Hikayeyi beğendiğinizde, arkasındaki kitap kapak resmi, yazar adı ve açıkl
 ## 👥 Katkıda Bulunanlar
 
 - Geliştirici: Hakan Ata Yılmaz , Ömer Fehmi Çakıcı , Yiğit Doğan Aladağ
-

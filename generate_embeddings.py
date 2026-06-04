@@ -58,12 +58,13 @@ def main():
     if embedding_shape[1] != 1024:
         print(f"[{time.strftime('%H:%M:%S')}] Warning: Embedding vector dimension is {embedding_shape[1]}, expected 1024.")
     
-    checkpoint_file = 'first_1k_checkpoint.npz'
+    checkpoint_file = 'books_data_parquet'
     print(f"[{time.strftime('%H:%M:%S')}] Saving checkpoint to {checkpoint_file}...")
-    np.savez_compressed(checkpoint_file, 
-                        embeddings=embeddings, 
-                        ids=df_subset['id'].values,
-                        titles=df_subset['title'].values)
+    with open(checkpoint_file, "wb") as checkpoint:
+        np.savez_compressed(checkpoint, 
+                            embeddings=embeddings, 
+                            ids=df_subset['id'].values,
+                            titles=df_subset['title'].values)
     
     # Measure memory
     end_mem = get_memory_usage()

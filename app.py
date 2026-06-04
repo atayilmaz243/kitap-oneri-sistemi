@@ -39,7 +39,7 @@ app.add_middleware(
 
 # ── Global State ──────────────────────────────────────────────
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-CHECKPOINT_PATH = os.path.join(BASE_DIR, "first_1k_checkpoint.npz")
+CHECKPOINT_PATH = os.path.join(BASE_DIR, "books_data_parquet")
 BOOK_DATA_PATH = os.path.join(BASE_DIR, "cleaned_data", "book_data")
 
 MAX_ATTEMPTS = 6
